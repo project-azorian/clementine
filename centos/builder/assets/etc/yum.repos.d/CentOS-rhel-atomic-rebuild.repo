@@ -1,0 +1,5 @@
+[rhel-atomic-rebuild]
+name=rhel-atomic-rebuild
+baseurl=http://mirror.centos.org/centos/7/atomic/x86_64/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7

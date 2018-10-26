@@ -1,0 +1,10 @@
+#!/bin/bash
+set -ex
+
+deb-ostree-builder /srv/clementine-ubuntu/definition/multistrap.conf stretch /srv/clementine-ubuntu/repo
+
+ostree --repo=/srv/clementine-ubuntu/repo refs --list
+
+ostree --repo=/srv/clementine-ubuntu/repo log os/debian/amd64/stretch
+
+ostree --repo=/srv/clementine-ubuntu/repo ls os/debian/amd64/stretch

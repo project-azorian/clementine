@@ -1,0 +1,22 @@
+#!/bin/bash
+set -ex
+
+ostree --repo=/srv/clementine-centos/build-repo init --mode=bare-user
+rpm-ostree compose tree \
+  --cachedir=/srv/clementine-centos/cache \
+  --repo=/srv/clementine-centos/build-repo \
+  definition/centos-clementine-host.json
+rm -rf /srv/clementine-centos/cache
+
+ostree --repo=/srv/clementine-centos/repo init --mode=archive
+ostree --repo=/srv/clementine-centos/repo \
+  pull-local \
+  /srv/clementine-centos/build-repo \
+  centos-clementine-host/7/x86_64/standard
+rm -rf /srv/clementine-centos/build-repo
+
+ostree --repo=/srv/clementine-centos/repo refs --list
+
+ostree --repo=/srv/clementine-centos/repo log centos-clementine-host/7/x86_64/standard
+
+ostree --repo=/srv/clementine-centos/repo ls centos-clementine-host/7/x86_64/standard

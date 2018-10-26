@@ -1,0 +1,33 @@
+{
+    "include": "centos-clementine-base.json",
+    "ref": "centos-clementine-host/7/x86_64/standard",
+
+    "packages": [
+        "microcode_ctl",
+        "dnsmasq",
+        "cryptsetup",
+        "device-mapper-multipath",
+        "etcd",
+        "flannel",
+        "ceph-common",
+        "glusterfs-fuse",
+        "sg3_utils",
+        "gomtree",
+        "cronie",
+        "oci-umount",
+        "redhat-logos",
+        "firewalld",
+        "podman"
+    ],
+
+    "repos": [
+        "CentOS-Base",
+        "CentOS-updates",
+        "CentOS-extras",
+        "rhel-atomic-rebuild",
+        "CentOS-CR"
+     ],
+
+     "mutate-os-release": "7"
+
+}
