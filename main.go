@@ -2,10 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
+	"os"
 	"strconv"
 
+	log "github.com/sirupsen/logrus"
+
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -18,6 +21,13 @@ type NodeStruct struct {
 var nodes []NodeStruct
 
 func main() {
+	// Setup primary logger
+	log.SetReportCaller(true)
+	log.SetFormatter(&log.TextFormatter{
+		DisableColors: true,
+		FullTimestamp: true,
+	})
+
 	// Provide some junk data to play with
 	nodes = append(nodes, NodeStruct{ID: 1, Name: "Node one"},
 		NodeStruct{ID: 2, Name: "Node two"},
@@ -33,9 +43,14 @@ func main() {
 	router.HandleFunc("/nodes", updateNode).Methods("PUT")
 	router.HandleFunc("/nodes/{id}", deleteNode).Methods("DELETE")
 
+	// Add middleware handlers
+	loggingHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
+	compressHandler := handlers.CompressHandler(loggingHandler)
+	proxyHeadersHandler := handlers.ProxyHeaders(compressHandler)
+
 	// Start HTTP server
 	log.Println("Starting up")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(http.ListenAndServe(":8000", proxyHeadersHandler))
 }
 
 func getNodes(w http.ResponseWriter, r *http.Request) {
